@@ -1,0 +1,5 @@
+TODO
+  * do we need to preserve hierachy?
+  * should we remove the supplementary stuff?
+  * give pre/post k info as context?
+  * if I encode the hierarchy, I can include the parent items in the context vectors
