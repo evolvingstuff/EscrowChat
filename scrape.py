@@ -22,10 +22,16 @@ def scrape_and_parse_data(url=conf.source_data_url):
     print('')
 
     paragraphs = soup.find_all('p')
+    chunks = []
     for i, p in enumerate(paragraphs, 1):
         text = extract_text(p)
+        if conf.ignore_official_interpretation:
+            if text.startswith('Official interpretation') or text.startswith('See interpretation'):
+                continue
         print('------------------------------------------------')
         print(f"Paragraph {i}: {text}")
+
+        chunks.append(text)
 
         links = p.find_all('a')
         for j, link in enumerate(links, 1):
@@ -33,3 +39,5 @@ def scrape_and_parse_data(url=conf.source_data_url):
             rel_href = link.get('href')
             abs_href = urljoin(url, rel_href)
             print(f"  Link {j}: {abs_href} - Text: {link_text}")
+
+    return '\n'.join(chunks)
