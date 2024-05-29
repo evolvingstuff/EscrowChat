@@ -1,7 +1,10 @@
 TODO
+  * I'm sorry, I cannot derive the answer to the question based on the provided context as it does not directly relate to the sources cited for consumer finance escrow regulations. This question is out of scope.
+  * look for acronyms and include those items?
   * do we need to preserve hierachy?
     * I think so. How to best represent this?
   * references aren't great or very specific. Need to fix that.
+    * how to attach the high level reference context to "chunks"?
   * how to control number of results returned? are they ranked?
   * add section metadata so as to allow for cross references?
   * give pre/post k info as context?

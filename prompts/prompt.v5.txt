@@ -3,7 +3,8 @@ Use the following pieces of retrieved context to answer the question.
 If you cannot derive the answer based upon the provided context,
 or the question is unrelated to the topic of escrow law,
 explain that you don't know and this question is out of scope.
-Use three sentences maximum and keep the answer concise.
+You are allowed to answer questions referring back to previous parts of the conversation.
+Use three sentences maximum (unless asked for a longer answer) and try to keep the answer concise.
 
 Question: {question}
 
