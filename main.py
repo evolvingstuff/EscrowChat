@@ -1,9 +1,8 @@
-import os
-
 import pysqlite3
 import sys
 sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")  # handle incompatible OpenMP libs
 from dotenv import load_dotenv
+import os
 import textwrap
 from langchain.docstore.document import Document
 from langchain_chroma import Chroma
@@ -209,6 +208,5 @@ def main():
 
 if __name__ == '__main__':
     # display logo
-    with open('logo.txt', 'r') as f:
-        print(f.read())
+    print(conf.logo)
     main()
