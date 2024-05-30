@@ -101,6 +101,8 @@ def scrape_and_parse_data(url: str = conf.source_data_url) -> str:
         2. use BeautifulSoup library to parse out readable text
         3. return the full concatenated text
     """
+    if not url.startswith('https'):
+        raise Exception('attempting to download from potentially insecure website')
     response = requests.get(url)
     if response.status_code != 200:
         raise Exception(f'Failed to retrieve {url}. Status code: {response.status_code}')
