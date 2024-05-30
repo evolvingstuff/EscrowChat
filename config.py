@@ -1,11 +1,11 @@
 source_data_url = 'https://www.consumerfinance.gov/rules-policy/regulations/1024/17/'
-openai_model = 'gpt-4o-2024-05-13'  # 'gpt-3.5-turbo-0125'
+openai_model = 'gpt-4o-2024-05-13'
 log_file = 'chat-logs.log'
+prompt_path = 'prompts/prompt.v7.txt'
 chunk_size = 1000
 chunk_overlap = 200
-model_temperature = 0.0
+max_width = 80
 ignore_official_interpretation = True
-prompt_path = 'prompts/prompt.v6.txt'
 test_questions = [
     "What actions are considered a violation of the RESPA?",
     "Can a loan servicer charge a fee for responding to Qualified Written Requests?",
