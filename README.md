@@ -20,6 +20,10 @@ chmod +x install.sh
 
 ## Usage
 
+_**EscrowChat requires the user to provide a valid OpenAI API key.**_
+This will be cached locally in a `.env` file at the root of the project directory,
+if it is not already included in the local system environment variables.
+
 From the root directory of this project, activate the virtual environment,
 and then run the script:
 

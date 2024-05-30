@@ -1,6 +1,9 @@
-import pysqlite3
-import sys
-sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")  # handle incompatible OpenMP libs
+try:
+    import pysqlite3
+    import sys
+    sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")  # handle incompatible OpenMP libs
+except Exception as e:
+    print('module pysqlite3 not found (this is probably okay)')
 from dotenv import load_dotenv
 import os
 import textwrap
