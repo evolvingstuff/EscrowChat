@@ -190,6 +190,9 @@ def main():
             print('')
             print('--------------------------------')
             question = input('QUESTION: ')
+            if question.strip().lower() in conf.exit_commands:
+                print('Exiting program... goodbye.')
+                break
             print()
             print('ANSWER:')
             conversation_history = conversation_manager.get_history()
@@ -205,7 +208,7 @@ def main():
 
 
 if __name__ == '__main__':
-    # logo:
+    # display logo
     with open('logo.txt', 'r') as f:
         print(f.read())
     main()

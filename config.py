@@ -6,6 +6,10 @@ chunk_size = 1000
 chunk_overlap = 200
 max_width = 80
 ignore_official_interpretation = True
+exit_commands = [
+    'exit',
+    'quit'
+]
 test_questions = [
     "What actions are considered a violation of the RESPA?",
     "Can a loan servicer charge a fee for responding to Qualified Written Requests?",
