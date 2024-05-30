@@ -13,7 +13,12 @@ fi
 # activate the virtual environment
 source $VENV_DIR/bin/activate
 
-# install pip requirements
+# upgrade pip
 pip install --upgrade pip
-pip install -r requirements.txt
+
+# install pip requirements individually to handle failures
+while read package; do
+    pip install "$package" || echo "Failed to install $package, skipping..."
+done < requirements.txt
+
 echo "Setup complete. To activate the virtual environment, run 'source $VENV_DIR/bin/activate'."
