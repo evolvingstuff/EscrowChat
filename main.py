@@ -1,3 +1,5 @@
+import os
+
 import pysqlite3
 import sys
 sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")  # handle incompatible OpenMP libs
@@ -100,7 +102,7 @@ def scrape_and_parse_data(url: str = conf.source_data_url) -> str:
     response = requests.get(url)
     if response.status_code != 200:
         raise Exception(f'Failed to retrieve {url}. Status code: {response.status_code}')
-    print(f'scraping data from {url}')
+    print(f'Pulling data from {url} ...', flush=True)
     soup = BeautifulSoup(response.content, 'html.parser')
     paragraphs = soup.find_all('p')
     chunks = []
@@ -115,6 +117,21 @@ def scrape_and_parse_data(url: str = conf.source_data_url) -> str:
     return '\n'.join(chunks)
 
 
+def ensure_api_key() -> None:
+    """
+    Purpose:
+        Check for existence of OPENAI_API_KEY in env vars, and if not,
+        query for it and store in a local .env file
+    """
+    load_dotenv()  # load existing .env variables
+    if not os.getenv('OPENAI_API_KEY'):
+        api_key = input("Enter your OPENAI_API_KEY: ").strip()
+        print('storing api key in .env file at root of this project...')
+        with open('.env', 'a') as env_file:
+            env_file.write(f'OPENAI_API_KEY={api_key}\n')
+        load_dotenv()
+
+
 def main():
     """
     Purpose:
@@ -124,27 +141,29 @@ def main():
         2.  instantiate conversation manager
         3.  scrape and parse text from the source url
         4.  optionally add "sanity check" statements into data (for debugging)
-        5.  load env vars, and possibly ask for OpenAI API key
-        6.  instantiate llm from OpenAI
-        7.  instantiate Chroma vector store and retriever
-        8.  instantiate prompt using selected version in prompts/*
-        9.  instantiate rag_chain object
-        10. MAIN LOOP: loop over Q/A conversation
-        11. garbage collection for Chroma vectorstore
+        5.  split text into chunks using RecursiveCharacterTextSplitter, for RAG vectorization
+        6.  load env vars, and possibly ask for OpenAI API key
+        7.  instantiate llm, vectorstore, retriver, prompt, and rag_chain objects
+        8.  MAIN LOOP: loop over Q/A conversation
+        9.  garbage collection for Chroma vectorstore
     """
 
     try:
         logging.basicConfig(filename=conf.log_file, level=logging.INFO,
                             format='%(asctime)s - %(levelname)s - %(message)s')
         conversation_manager = ConversationManager()
-        vectorstore = None
+
         text = scrape_and_parse_data()
         if conf.sanity_check:  # optionally add special clauses for debugging
             text += '\n' + conf.sanity_check_statement
+
         docs = [Document(page_content=text)]
+
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=conf.chunk_size, chunk_overlap=conf.chunk_overlap)
         splits = text_splitter.split_documents(docs)
-        load_dotenv()
+
+        ensure_api_key()
+
         llm = ChatOpenAI(model=conf.openai_model)
         vectorstore = Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings())
         retriever = vectorstore.as_retriever()
@@ -168,6 +187,7 @@ def main():
         )
 
         while True:
+            print('')
             print('--------------------------------')
             question = input('QUESTION: ')
             print()
@@ -185,4 +205,7 @@ def main():
 
 
 if __name__ == '__main__':
+    # logo:
+    with open('logo.txt', 'r') as f:
+        print(f.read())
     main()

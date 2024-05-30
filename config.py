@@ -1,7 +1,7 @@
 source_data_url = 'https://www.consumerfinance.gov/rules-policy/regulations/1024/17/'
 openai_model = 'gpt-4o-2024-05-13'
 log_file = 'chat-logs.log'
-prompt_path = 'prompts/prompt.v7.txt'
+prompt_path = 'prompts/prompt.v8.txt'
 chunk_size = 1000
 chunk_overlap = 200
 max_width = 80
